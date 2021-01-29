@@ -14,7 +14,9 @@ Input: head = [3,2,0,-4], pos = 1
 Output: tail connects to node index 1
 Explanation: There is a cycle in the linked list, where tail connects to the second node.
  
-Solution: TODO 
+Solution: https://leetcode.com/problems/linked-list-cycle-ii/discuss/44781/Concise-O(n)-solution-by-using-C%2B%2B-with-Detailed-Alogrithm-Description
+          The distance between the head location and entry location is equal to the distance between the meeting location and the entry location along the direction of forward movement.
+          When the slow pointer and the fast pointer encounter in the cycle, we can define a pointer "entry" that point to the head, this "entry" pointer moves one step each time so as the slow pointer. When this "entry" pointer and the slow pointer both point to the same location, this location is the node where the cycle begins.
 */
 
 
@@ -27,8 +29,29 @@ Solution: TODO
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
-
-/*TODO*/
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode *fastP = head;
+        ListNode *slowP = head;
+        ListNode *entry = head;
+        
+        while (fastP!=NULL && fastP->next!=NULL && fastP->next->next!=NULL) {
+            fastP = fastP->next->next;
+            slowP = slowP->next;
+            
+            if (fastP == slowP) {
+                while (slowP != entry) {
+                    // head<->entry == entry<->meet point 
+                    slowP = slowP->next;
+                    entry = entry->next;
+                }
+                return entry;
+            }
+        }
+        return NULL;
+    }
+};
 
 /* BRUTE FORCE
 class Solution {
